@@ -1,0 +1,6 @@
+require "pivotaltracker/connection"
+require "pivotaltracker/cli"
+require "pivotaltracker/command"
+require "pivotaltracker/printer"
+require "pivotaltracker/account"
+require "pivotaltracker/project"

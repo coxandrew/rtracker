@@ -1,0 +1,36 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    awesome_print (0.3.1)
+    crack (0.1.8)
+    diff-lcs (1.1.2)
+    hirb (0.3.6)
+    httparty (0.6.1)
+      crack (= 0.1.8)
+    interactive_editor (0.0.6)
+      spoon (>= 0.0.1)
+    nokogiri (1.4.4)
+    rspec (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
+      rspec-mocks (~> 2.0.1)
+    rspec-core (2.0.1)
+    rspec-expectations (2.0.1)
+      diff-lcs (>= 1.1.2)
+    rspec-mocks (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
+    spoon (0.0.1)
+    wirble (0.1.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  awesome_print
+  hirb
+  httparty
+  interactive_editor
+  nokogiri (~> 1.4.4)
+  rspec (~> 2.0.1)
+  wirble
