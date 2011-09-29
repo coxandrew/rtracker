@@ -8,7 +8,12 @@ module PivotalTracker
     end
 
     def status(options = {})
-      @printer.print_status(@account.projects)
+      projects = @account.projects
+      if options["id"]
+        projects.select! { |project| project.id == options["id"] }
+      end
+
+      @printer.print_status(projects)
     end
 
     def deadlines(options = {})
