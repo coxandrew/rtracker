@@ -10,6 +10,7 @@ describe Printer do
     let(:projects) { Account.new.projects }
 
     it "prints all active projects" do
+      pending
       output.should_receive(:print).with(/My Sample Project/)
       output.should_receive(:print).with(/Secret Project/)
 
@@ -17,6 +18,7 @@ describe Printer do
     end
 
     it "prints next deadlines for each project" do
+      pending
       output.should_receive(:print).with(/2011-01-30/)
       output.should_receive(:print).with(/2011-02-05/)
 
@@ -28,6 +30,7 @@ describe Printer do
     let(:releases) { Account.new.upcoming_deadlines }
 
     it "lists all upcoming deadlines" do
+      pending
       output.should_receive(:print).with(/2011-01-30/)
       output.should_receive(:print).with(/2011-02-05/)
       output.should_receive(:print).with(/2011-02-28/)
