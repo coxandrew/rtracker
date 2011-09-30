@@ -1,3 +1,5 @@
+require "nokogiri"
+
 module PivotalTracker
   class Project
     attr_reader :id, :name, :velocity
@@ -14,15 +16,10 @@ module PivotalTracker
       projects.collect { |attributes| Project.new(attributes) }
     end
 
-    def add_story(story)
-      @connection.class.post(
-        "/projects/#{@id}/stories",
-        :headers => {
-          "Content-type" => "application/xml",
-          "X-TrackerToken" => @connection.token
-        },
-        :body => story.to_xml
-      )
+    def stories
+      @connection.request("/projects/#{@id}/stories").collect { |story|
+        Story.new(story)
+      }
     end
 
     def velocity

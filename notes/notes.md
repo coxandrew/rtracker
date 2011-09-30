@@ -24,3 +24,6 @@ Add story with params (not working yet):
 
     curl -H "X-TrackerToken: d16dddbdd03adf75eeca86e55e4031b5" -X POST "http://www.pivotaltracker.com/services/v3/projects/369409/stories?story\[name\]=Make%20it%20so&story\[requested_by\]=Picard"
 
+## Questions
+
+* Can you add a note when creating a story?

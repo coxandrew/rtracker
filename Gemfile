@@ -12,4 +12,5 @@ group :development do
   gem "hirb"
   gem "awesome_print", :require => "ap"
   gem "interactive_editor"
+  gem "pry"
 end
