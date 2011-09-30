@@ -14,6 +14,17 @@ module PivotalTracker
       projects.collect { |attributes| Project.new(attributes) }
     end
 
+    def add_story(story)
+      @connection.class.post(
+        "/projects/#{@id}/stories",
+        :headers => {
+          "Content-type" => "application/xml",
+          "X-TrackerToken" => @connection.token
+        },
+        :body => story.to_xml
+      )
+    end
+
     def velocity
       response = @connection.request("/projects/#{@id}")
       if response["message"] == "Resource not found"

@@ -7,6 +7,8 @@ module PivotalTracker
     base_uri "www.pivotaltracker.com/services/v3"
     format :xml
 
+    attr_accessor :token
+
     def initialize(token = "d16dddbdd03adf75eeca86e55e4031b5")
       @token = token
     end

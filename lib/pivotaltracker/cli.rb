@@ -45,7 +45,6 @@ module PivotalTracker
 
         opts.on("-h", "--help", "Print this help") do
           options[:help] = true
-          puts opts
           print_available_commands
         end
 
@@ -54,6 +53,10 @@ module PivotalTracker
           options["id"] = project_id
         end
 
+        opts.on("-j", "--jira JIRA_ID",
+          "Choose JIRA JIRA_ID for importing") do |jira_id|
+          options["jira_id"] = jira_id
+        end
       end
 
       optparse.parse!(args)
@@ -83,6 +86,10 @@ module PivotalTracker
       commands << OpenStruct.new(
         :keyword => "velocity",
         :description => "With the --project option, show the velocity of a project"
+      )
+      commands << OpenStruct.new(
+        :keyword => "import",
+        :description => "Import all new issues from JIRA into project specified by --project option"
       )
       return commands
     end
