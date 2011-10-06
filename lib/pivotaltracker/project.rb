@@ -17,9 +17,12 @@ module PivotalTracker
     end
 
     def stories
-      @connection.request("/projects/#{@id}/stories").collect { |story|
-        Story.new(story)
-      }
+      response = @connection.request("/projects/#{@id}/stories")
+      response.parsed_response["stories"].collect { |s| Story.new(s) }
+    end
+
+    def accepted_stories
+      stories.select { |story| story.accepted? }
     end
 
     def velocity

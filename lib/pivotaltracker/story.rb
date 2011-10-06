@@ -1,8 +1,9 @@
 require "nokogiri"
+require "pp"
 
 module PivotalTracker
   class Story
-    attr_reader :id, :name
+    attr_reader :id, :name, :jira_id
 
     def initialize(options = {})
       @id               = options["id"]
@@ -13,8 +14,17 @@ module PivotalTracker
       @requested_by     = options["requested_by"]
       @current_state    = options["current_state"]
       @current_estimate = options["current_estimate"]
+      @jira_id          = options["jira_id"].to_i if options["jira_id"]
 
-      @jira_id          = options["jira_id"]
+      @notes = []
+      jira_url_pattern = /^https?:\/\/jira.autodesk.com\/issues\/[0-9]{4,}$/
+      options["notes"].to_a.each do |note|
+        new_note = Note.new(note)
+        if @jira_id.nil? && new_note.text =~ jira_url_pattern
+          @jira_id = new_note.text.scan(/[0-9]+$/).first.to_i
+        end
+        @notes << new_note
+      end
     end
 
     def to_xml
@@ -28,7 +38,7 @@ module PivotalTracker
     end
 
     def add
-      puts "Adding story #{@name} ..."
+      puts "Adding story: '#{@name} ...'"
       conn = Connection.new
       response = conn.class.post(
         "/projects/#{@project_id}/stories",
@@ -63,6 +73,10 @@ module PivotalTracker
 
     def set_id(httparty_response)
       @id = httparty_response["story"]["id"]
+    end
+
+    def accepted?
+      @current_state == "accepted"
     end
 
   end

@@ -4,6 +4,10 @@ X * Fix error for status
 X * Restrict to project
 
 * Add "import" command
+  X * Get project id from command line
+  * Don't import duplicate JIRA stories
+  * Parse XML from file
+  * Get XML from JIRA
 * Read config settings from YAML file
 * Make https work
 
@@ -23,6 +27,10 @@ Add a story with XML:
 Add story with params (not working yet):
 
     curl -H "X-TrackerToken: d16dddbdd03adf75eeca86e55e4031b5" -X POST "http://www.pivotaltracker.com/services/v3/projects/369409/stories?story\[name\]=Make%20it%20so&story\[requested_by\]=Picard"
+
+## Getting story sizes
+
+
 
 ## Questions
 
