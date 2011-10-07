@@ -38,7 +38,6 @@ module PivotalTracker
     end
 
     def add
-      puts "Adding story: '#{@name} ...'"
       conn = Connection.new
       response = conn.class.post(
         "/projects/#{@project_id}/stories",
@@ -49,6 +48,7 @@ module PivotalTracker
         :body => self.to_xml
       )
       set_id(response)
+      puts "+ Added #{@story_type}: '#{@name}'"
     end
 
     def add_note(note)

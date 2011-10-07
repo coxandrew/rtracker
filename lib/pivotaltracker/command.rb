@@ -45,13 +45,13 @@ module PivotalTracker
 
       issues = []
       issues << OpenStruct.new(
-        :jira_id => "1234",
+        :jira_id => "112340",
         :story_type => "bug",
         :name => "New bug from cli (#{Time.now})",
         :requested_by => "Andrew Cox"
       )
       issues << OpenStruct.new(
-        :jira_id => "1235",
+        :jira_id => "112350",
         :story_type => "feature",
         :name => "New feature from cli (#{Time.now})",
         :requested_by => "Andrew Cox",
@@ -72,7 +72,7 @@ module PivotalTracker
           story.add
           story.add_note("http://jira.autodesk.com/issues/#{issue.jira_id}")
         else
-          puts "** Already imported JIRA issue: '#{story.name}'"
+          puts "- Already imported JIRA issue: '#{story.name}'"
         end
       end
     end
