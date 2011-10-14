@@ -2,18 +2,18 @@
 
 X * Fix error for status
 X * Restrict to project
+X * Get project id from command line
+X * Don't import duplicate JIRA stories
 
-* Add "import" command
-  X * Get project id from command line
-  * Don't import duplicate JIRA stories
-  * Parse XML from file
-  * Get XML from JIRA
-* Read config settings from YAML file
-* Make https work
+* Parse config.yml to get JIRA and Pivotal credentials
+* Parse XML from file to get list of stories
+* Parse JSON for each story
+* Get XML from JIRA
 
 ## Later
 
 * Allow prompt for password for JIRA and Pivotal
+* Make https work
 
 ## NOTES
 

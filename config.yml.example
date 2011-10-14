@@ -1,0 +1,6 @@
+jira:
+  domain: jira.autodesk.com
+  username: your_username
+  password: Password1
+pivotal:
+  api_token: a87lksdf9a87dsf98asdfjasd89f7sdf
