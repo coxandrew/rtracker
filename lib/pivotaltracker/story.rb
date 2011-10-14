@@ -3,7 +3,7 @@ require "pp"
 
 module PivotalTracker
   class Story
-    attr_reader :id, :name, :jira_id
+    attr_reader :id, :name, :jira_id, :story_type
 
     def initialize(options = {})
       @id               = options["id"]
@@ -13,7 +13,7 @@ module PivotalTracker
       @description      = options["description"]
       @requested_by     = options["requested_by"]
       @current_state    = options["current_state"]
-      @current_estimate = options["current_estimate"]
+      @estimate = options["estimate"]
       @jira_id          = options["jira_id"].to_i if options["jira_id"]
 
       @notes = []
@@ -77,6 +77,10 @@ module PivotalTracker
 
     def accepted?
       @current_state == "accepted"
+    end
+
+    def csv_fields
+      [@name, @story_type, @estimate]
     end
 
   end

@@ -1,4 +1,5 @@
 require "nokogiri"
+require "csv"
 
 module PivotalTracker
   class Project
@@ -43,6 +44,14 @@ module PivotalTracker
       releases.each do |release|
         if release["deadline"]
           return release if Date.parse(release["deadline"].to_s) >= Date.today
+        end
+      end
+    end
+
+    def stories_csv
+      CSV.open("stories.csv", "wb") do |csv|
+        accepted_stories.each do |story|
+          csv << story.csv_fields if story.story_type == "feature"
         end
       end
     end
