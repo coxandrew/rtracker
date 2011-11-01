@@ -19,7 +19,7 @@ module PivotalTracker
 
     def request(path, query = {})
       Connection.get(path,
-        :headers => { "X-TrackerToken" => @token },
+        :headers => { "X-TrackerToken" => @pivotal_token },
         :query => query
       )
     end

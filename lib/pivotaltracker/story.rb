@@ -43,7 +43,7 @@ module PivotalTracker
         "/projects/#{@project_id}/stories",
         :headers => {
           "Content-type" => "application/xml",
-          "X-TrackerToken" => conn.token
+          "X-TrackerToken" => conn.pivotal_token
         },
         :body => self.to_xml
       )
@@ -65,7 +65,7 @@ module PivotalTracker
         path,
         :headers => {
           "Content-type" => "application/xml",
-          "X-TrackerToken" => conn.token
+          "X-TrackerToken" => conn.pivotal_token
         },
         :body => note_xml
       )

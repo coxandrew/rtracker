@@ -1,5 +1,5 @@
 pivotal:
-  api_key: a87lksdf9a87dsf98asdfjasd89f7sdf
+  api_token: a87lksdf9a87dsf98asdfjasd89f7sdf
 jira:
   domain: jira.autodesk.com
   username: your_username

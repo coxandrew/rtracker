@@ -4,8 +4,9 @@ X * Fix error for status
 X * Restrict to project
 X * Get project id from command line
 X * Don't import duplicate JIRA stories
+X * Parse config.yml to get JIRA and Pivotal credentials
 
-* Parse config.yml to get JIRA and Pivotal credentials
+* Rename pivotaltracker executable to rtracker
 * Parse XML from file to get list of stories
 * Parse JSON for each story
 * Get XML from JIRA
