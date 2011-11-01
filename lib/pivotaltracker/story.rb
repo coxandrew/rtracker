@@ -13,7 +13,7 @@ module PivotalTracker
       @description      = options["description"]
       @requested_by     = options["requested_by"]
       @current_state    = options["current_state"]
-      @estimate = options["estimate"]
+      @estimate         = options["estimate"]
       @jira_id          = options["jira_id"].to_i if options["jira_id"]
 
       @notes = []

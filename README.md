@@ -20,7 +20,7 @@ Copy config.yaml.example to config.yaml and change to match your project:
 
 Show high-level RED/YELLOW/GREEN status of all projects
 
-    $ pt status
+    $ bin/rtracker status
 
     id        project              status   schedule       next deadline
     --------------------------------------------------------------------
@@ -29,7 +29,7 @@ Show high-level RED/YELLOW/GREEN status of all projects
 
 Show detailed status of a single project
 
-    $ pivotaltracker status --project 166983
+    $ bin/rtracker status --project 166983
 
     NAME:
       IO Pro Maintenance
@@ -45,26 +45,20 @@ Show detailed status of a single project
 
 Show current velocity of a given project
 
-    $ pivotaltracker velocity --project 331671
+    $ bin/rtracker velocity --project 331671
 
     10 story points / week
 
-Show the current velocity of the UX team
-
-    $ pivotaltracker velocity --team ux
-
-    14 story points / week
-
 List the upcoming deadlines
 
-    $ pivotaltracker deadlines
+    $ bin/rtracker deadlines
 
     2011-01-20 - Velocity 8.0-3 Code Complete
     2011-01-31 - Velocity 8.0-3 Last Possible Change
 
 Import all issues from a JIRA project into a Pivotal project:
 
-    $ pivotaltracker import --jira FFM --project 331671
+    $ bin/rtracker import --jira FFM --project 331671
 
 ## References
 
