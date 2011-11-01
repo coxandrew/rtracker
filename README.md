@@ -1,6 +1,6 @@
 ## Overview
 
-A command-line wrapper for the [PivotalTracker](http://pivotaltracker.com) API that allows to:
+A Ruby command-line wrapper for the [PivotalTracker](http://pivotaltracker.com) API that allows you to:
 
 * Report on overall health of projects
 * Import issues from JIRA
@@ -9,11 +9,12 @@ A command-line wrapper for the [PivotalTracker](http://pivotaltracker.com) API t
 
 Copy config.yaml.example to config.yaml and change to match your project:
 
-    domain:   jira.autodesk.com
-    jira_username: username
-    jira_password: Password1
-    pivotal_username: your_name@domain.com
-    pivotal_password: Password2
+    pivotal:
+      api_key: a87lksdf9a87dsf98asdfjasd89f7sdf
+    jira:
+      domain: jira.autodesk.com
+      username: your_username
+      password: Password1
 
 ## Usage
 
@@ -67,4 +68,4 @@ Import all issues from a JIRA project into a Pivotal project:
 
 ## References
 
-* [PivotalTracker API Reference]([https://www.pivotaltracker.com/help/api?version=v3)
+* [PivotalTracker API v3 Reference]([https://www.pivotaltracker.com/help/api?version=v3)
