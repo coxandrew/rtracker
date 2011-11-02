@@ -122,7 +122,7 @@ http://jira.autodesk.com/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest
                                                 </customfields>
     </item>
 
-<item>
+<!-- <item>
             <title>[FF-1009] Translation error on a specific old classic DWF</title>
                 <link>http://jira.autodesk.com/browse/FF-1009</link>
                 <project id="10822" key="FF">Firefly Web</project>
@@ -1224,10 +1224,10 @@ http://jira.autodesk.com/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest
                         <description>&lt;p&gt;I don&apos;t have a repro case, but here&apos;s all the stuff that I did:&lt;/p&gt;
 
 &lt;ul&gt;
-	&lt;li&gt;I created about 10 simple markups on a DWF with no markups (Carriage 2D.dwf)&lt;/li&gt;
-	&lt;li&gt;I played with the colors of one or two of the markups&lt;/li&gt;
-	&lt;li&gt;I selected markups and then turned markup on and off from the panel&lt;/li&gt;
-	&lt;li&gt;I deleted all but 4 of the markups&lt;/li&gt;
+  &lt;li&gt;I created about 10 simple markups on a DWF with no markups (Carriage 2D.dwf)&lt;/li&gt;
+  &lt;li&gt;I played with the colors of one or two of the markups&lt;/li&gt;
+  &lt;li&gt;I selected markups and then turned markup on and off from the panel&lt;/li&gt;
+  &lt;li&gt;I deleted all but 4 of the markups&lt;/li&gt;
 &lt;/ul&gt;
 
 
@@ -2188,6 +2188,6 @@ http://jira.autodesk.com/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest
                 </customfieldvalues>
             </customfield>
                                                 </customfields>
-    </item>
+    </item> -->
 </channel>
 </rss>

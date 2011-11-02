@@ -5,11 +5,12 @@ X * Restrict to project
 X * Get project id from command line
 X * Don't import duplicate JIRA stories
 X * Parse config.yml to get JIRA and Pivotal credentials
+X * Rename pivotaltracker executable to rtracker
 
-* Rename pivotaltracker executable to rtracker
 * Parse XML from file to get list of stories
 * Parse JSON for each story
 * Get XML from JIRA
+* Handle unknown users gracefully
 
 ## Later
 

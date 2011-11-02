@@ -1,3 +1,6 @@
+require 'nokogiri'
+require "pp"
+
 module PivotalTracker
   class OptionParser::InvalidCommand < Exception; end
 
@@ -35,28 +38,38 @@ module PivotalTracker
       # TODO:
       # For each issue:
       # * Get list of issues from JIRA
-      # * Parse list of issues into array of issue objects
+      # X * Parse list of issues into array of issue objects
       # X * Check to see if that issue is in Pivotal
       # X * If not, add it
       # * Add notes for:
-      #   * JIRA URL
+      #   X * JIRA URL
       #   * Attachments
-      # * If it's in Pivotal, add any new comments, attachments, etc
+      # * If it's already in Pivotal, add any new comments, attachments, etc
+      # * See if we can use "other integration" with the API
 
       issues = []
-      issues << OpenStruct.new(
-        :jira_id => "112340",
-        :story_type => "bug",
-        :name => "New bug from cli (#{Time.now})",
-        :requested_by => "Andrew Cox"
-      )
-      issues << OpenStruct.new(
-        :jira_id => "112350",
-        :story_type => "feature",
-        :name => "New feature from cli (#{Time.now})",
-        :requested_by => "Andrew Cox",
-        :note => "Example note"
-      )
+      jira_issues = Nokogiri::XML(File.open("fixtures/ff_jira_issues.xml"))
+      jira_issues.xpath("//item").each do |node|
+        issue = OpenStruct.new(
+          :jira_id      => node.xpath("key").text,
+          :story_type   => Story.story_type(node),
+          :name         => node.xpath("summary").text,
+          :requested_by => "Andrew Cox" # node.xpath("reporter").text
+        )
+
+        issue.notes = []
+
+        environment = node.xpath("environment")
+        if !environment.text.empty?
+          issue.notes << "Environment: #{environment.text}"
+        end
+
+        node.xpath("comments/comment[text()]").each do |comment|
+          issue.notes << comment.text
+        end
+
+        issues << issue
+      end
 
       existing_stories = Project.new("id" => project_id).stories
       issues.each do |issue|

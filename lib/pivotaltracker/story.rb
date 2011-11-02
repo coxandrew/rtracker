@@ -17,11 +17,11 @@ module PivotalTracker
       @jira_id          = options["jira_id"].to_i if options["jira_id"]
 
       @notes = []
-      jira_url_pattern = /^https?:\/\/jira.autodesk.com\/issues\/[0-9]{4,}$/
+      jira_url_pattern = /^https?:\/\/jira.autodesk.com\/issues\/[A-Z]{2,3}-[0-9]{4,}$/
       options["notes"].to_a.each do |note|
         new_note = Note.new(note)
         if @jira_id.nil? && new_note.text =~ jira_url_pattern
-          @jira_id = new_note.text.scan(/[0-9]+$/).first.to_i
+          @jira_id = new_note.text.scan(/[A-Z]{2,3}-[0-9]{4,}$/).first.to_i
         end
         @notes << new_note
       end
@@ -81,6 +81,12 @@ module PivotalTracker
 
     def csv_fields
       [@name, @story_type, @estimate]
+    end
+
+    def self.story_type(node)
+      story_type = node.xpath("type").text.scan(/^(feature|bug)/i)[0]
+      story_type ||= ["feature"]
+      story_type.first.downcase
     end
 
   end
