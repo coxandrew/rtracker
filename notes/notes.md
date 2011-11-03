@@ -17,8 +17,9 @@ X * Try using External Link for JIRA in Pivotal story
 * Get integration id from the Project
 * Handle unknown users gracefully
 * Make a proper Project object that you can use with `Project.find()`
+* Try vcr for integration tests
+* Delete all stories in setup for tests
 * Make https work
-* Look into singleton for Config class
 
 ## NOTES
 

@@ -19,6 +19,7 @@ module PivotalTracker
           :jira_id      => node.xpath("key").text,
           :story_type   => Story.story_type(node),
           :name         => node.xpath("summary").text,
+          :description  => node.xpath("description").text,
           :requested_by => "Andrew Cox" # node.xpath("reporter").text
         )
       

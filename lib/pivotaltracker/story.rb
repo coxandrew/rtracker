@@ -1,5 +1,6 @@
 require "nokogiri"
 require "pp"
+require "reverse_markdown"
 
 module PivotalTracker
   class Story
@@ -10,20 +11,11 @@ module PivotalTracker
       @project_id       = options["project_id"]
       @story_type       = options["story_type"]
       @name             = options["name"]
-      @description      = options["description"]
+      @description      = html_to_markdown(options["description"])
       @requested_by     = options["requested_by"]
       @current_state    = options["current_state"]
       @estimate         = options["estimate"]
       @jira_id          = options["jira_id"] || options["other_id"]
-
-      # jira_url_pattern = /^https?:\/\/jira.autodesk.com\/issues\/[A-Z]{2,3}-[0-9]{4,}$/
-      # options["notes"].to_a.each do |note|
-      #   new_note = Note.new(note)
-      #   if @jira_id.nil? && new_note.text =~ jira_url_pattern
-      #     @jira_id = new_note.text.scan(/[A-Z]{2,3}-[0-9]{4,}$/).first
-      #   end
-      #   @notes << new_note
-      # end
     end
 
     def to_xml
@@ -31,7 +23,10 @@ module PivotalTracker
         xml.story {
           xml.story_type      @story_type
           xml.name            @name
+          xml.description     @description
           xml.requested_by    @requested_by
+          
+          # JIRA integration
           xml.other_id        @jira_id
           xml.integration_id  "9423"
         }
@@ -90,6 +85,13 @@ module PivotalTracker
       story_type = node.xpath("type").text.scan(/^(feature|bug)/i)[0]
       story_type ||= ["feature"]
       story_type.first.downcase
+    end
+    
+    private
+    
+    def html_to_markdown(html)
+      return "" if html.nil?
+      ReverseMarkdown.new.parse_string(html)
     end
 
   end

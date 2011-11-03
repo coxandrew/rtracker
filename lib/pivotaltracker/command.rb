@@ -43,6 +43,7 @@ module PivotalTracker
           "story_type"      => issue.story_type,
           "name"            => issue.name,
           "requested_by"    => issue.requested_by,
+          "description"     => issue.description,
           "note"            => issue.note,
           "jira_id"         => issue.jira_id
         )
