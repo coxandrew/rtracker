@@ -11,6 +11,10 @@ module PivotalTracker
       @name       = attributes["name"]
       @velocity   = attributes["current_velocity"]
     end
+    
+    def self.find(id)
+      Connection.new.request("/projects/#{id}")
+    end
 
     def self.all
       projects = Connection.new.request("/projects").parsed_response["projects"]

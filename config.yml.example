@@ -1,6 +1,6 @@
 pivotal:
   api_token: a87lksdf9a87dsf98asdfjasd89f7sdf
 jira:
-  domain: jira.autodesk.com
+  base_uri: jira.yourcompany.com
   username: your_username
   password: Password1

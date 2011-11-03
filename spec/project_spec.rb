@@ -1,8 +1,15 @@
 require 'spec_helper'
+require 'pp'
 
 include PivotalTracker
 
 describe Project do
+  context "#project" do
+    it "finds a single project by id" do
+      project = Project.find(369409)
+    end
+  end
+  
   context "#stories" do
     it "gets all stories" do
       project = Project.new("id" => "369409")

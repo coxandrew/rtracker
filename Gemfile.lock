@@ -5,9 +5,11 @@ GEM
     coderay (0.9.8)
     crack (0.1.8)
     diff-lcs (1.1.2)
+    hashie (1.2.0)
     hirb (0.3.6)
     httparty (0.6.1)
       crack (= 0.1.8)
+    httpclient (2.2.3)
     interactive_editor (0.0.6)
       spoon (>= 0.0.1)
     method_source (0.6.6)
@@ -40,8 +42,10 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  hashie
   hirb
   httparty
+  httpclient
   interactive_editor
   nokogiri (~> 1.4.4)
   pry

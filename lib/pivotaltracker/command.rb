@@ -1,5 +1,5 @@
 require 'nokogiri'
-require "pp"
+require 'pp'
 
 module PivotalTracker
   class OptionParser::InvalidCommand < Exception; end
@@ -28,51 +28,16 @@ module PivotalTracker
       @printer.print_velocity(project.velocity)
     end
 
+    # TODO: Move command exceptions to cli?
     def import(options = {})
       project_id = options["id"]
       if project_id.nil?
         $stderr.puts "\nError: import requires a --project argument"
         raise OptionParser::InvalidOption
       end
-
-      # TODO:
-      # For each issue:
-      # * Get list of issues from JIRA
-      # X * Parse list of issues into array of issue objects
-      # X * Check to see if that issue is in Pivotal
-      # X * If not, add it
-      # * Add notes for:
-      #   X * JIRA URL
-      #   * Attachments
-      # * If it's already in Pivotal, add any new comments, attachments, etc
-      # * See if we can use "other integration" with the API
-
-      issues = []
-      jira_issues = Nokogiri::XML(File.open("fixtures/ff_jira_issues.xml"))
-      jira_issues.xpath("//item").each do |node|
-        issue = OpenStruct.new(
-          :jira_id      => node.xpath("key").text,
-          :story_type   => Story.story_type(node),
-          :name         => node.xpath("summary").text,
-          :requested_by => "Andrew Cox" # node.xpath("reporter").text
-        )
-
-        issue.notes = []
-
-        environment = node.xpath("environment")
-        if !environment.text.empty?
-          issue.notes << "Environment: #{environment.text}"
-        end
-
-        node.xpath("comments/comment[text()]").each do |comment|
-          issue.notes << comment.text
-        end
-
-        issues << issue
-      end
-
-      existing_stories = Project.new("id" => project_id).stories
-      issues.each do |issue|
+      
+      stories = Project.new("id" => project_id).stories
+      Jira.new.issues.each do |issue|
         story = Story.new(
           "project_id"      => project_id,
           "story_type"      => issue.story_type,
@@ -81,11 +46,11 @@ module PivotalTracker
           "note"            => issue.note,
           "jira_id"         => issue.jira_id
         )
-        if !existing_stories.find { |es| es.jira_id == story.jira_id }
-          story.add
-          story.add_note("http://jira.autodesk.com/issues/#{issue.jira_id}")
+        story_exists = stories.find { |s| s.jira_id == story.jira_id }
+        if story_exists
+          puts "- Already imported JIRA issue: '[#{story.jira_id}] #{story.name}'"
         else
-          puts "- Already imported JIRA issue: '#{story.name}'"
+          story.add
         end
       end
     end

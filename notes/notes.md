@@ -6,16 +6,19 @@ X * Get project id from command line
 X * Don't import duplicate JIRA stories
 X * Parse config.yml to get JIRA and Pivotal credentials
 X * Rename pivotaltracker executable to rtracker
+X * Parse XML from file to get list of stories
+X * Get XML from JIRA
+X * Use username and password for JIRA from Yaml file 
+X * Try using External Link for JIRA in Pivotal story
 
-* Parse XML from file to get list of stories
-* Parse JSON for each story
-* Get XML from JIRA
+* Add screenshots as notes
+* Add comments
+* Try using mash from hashie for creating a proper Project object
+* Get integration id from the Project
 * Handle unknown users gracefully
-
-## Later
-
-* Allow prompt for password for JIRA and Pivotal
+* Make a proper Project object that you can use with `Project.find()`
 * Make https work
+* Look into singleton for Config class
 
 ## NOTES
 

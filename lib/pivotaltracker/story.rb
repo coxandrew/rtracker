@@ -14,36 +14,38 @@ module PivotalTracker
       @requested_by     = options["requested_by"]
       @current_state    = options["current_state"]
       @estimate         = options["estimate"]
-      @jira_id          = options["jira_id"].to_i if options["jira_id"]
+      @jira_id          = options["jira_id"] || options["other_id"]
 
-      @notes = []
-      jira_url_pattern = /^https?:\/\/jira.autodesk.com\/issues\/[A-Z]{2,3}-[0-9]{4,}$/
-      options["notes"].to_a.each do |note|
-        new_note = Note.new(note)
-        if @jira_id.nil? && new_note.text =~ jira_url_pattern
-          @jira_id = new_note.text.scan(/[A-Z]{2,3}-[0-9]{4,}$/).first.to_i
-        end
-        @notes << new_note
-      end
+      # jira_url_pattern = /^https?:\/\/jira.autodesk.com\/issues\/[A-Z]{2,3}-[0-9]{4,}$/
+      # options["notes"].to_a.each do |note|
+      #   new_note = Note.new(note)
+      #   if @jira_id.nil? && new_note.text =~ jira_url_pattern
+      #     @jira_id = new_note.text.scan(/[A-Z]{2,3}-[0-9]{4,}$/).first
+      #   end
+      #   @notes << new_note
+      # end
     end
 
     def to_xml
       Nokogiri::XML::Builder.new { |xml|
         xml.story {
-          xml.story_type    @story_type
-          xml.name          @name
-          xml.requested_by  @requested_by
+          xml.story_type      @story_type
+          xml.name            @name
+          xml.requested_by    @requested_by
+          xml.other_id        @jira_id
+          xml.integration_id  "9423"
         }
       }.to_xml
     end
 
+    # TODO: Don't reach through Connection to get the pivotal token
     def add
       conn = Connection.new
       response = conn.class.post(
         "/projects/#{@project_id}/stories",
         :headers => {
           "Content-type" => "application/xml",
-          "X-TrackerToken" => conn.pivotal_token
+          "X-TrackerToken" => conn.config.pivotal.token
         },
         :body => self.to_xml
       )
@@ -51,6 +53,7 @@ module PivotalTracker
       puts "+ Added #{@story_type}: '#{@name}'"
     end
 
+    # TODO: Don't reach through Connection to get the pivotal token
     def add_note(note)
       conn = Connection.new
       path = "/projects/#{@project_id}/stories/#{@id}/notes"
@@ -65,7 +68,7 @@ module PivotalTracker
         path,
         :headers => {
           "Content-type" => "application/xml",
-          "X-TrackerToken" => conn.pivotal_token
+          "X-TrackerToken" => conn.config.pivotal.token
         },
         :body => note_xml
       )
@@ -91,4 +94,3 @@ module PivotalTracker
 
   end
 end
-
