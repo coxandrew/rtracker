@@ -1,6 +1,6 @@
-require "nokogiri"
-require "pp"
-require "reverse_markdown"
+require 'nokogiri'
+require 'pp'
+require 'sanitize'
 
 module PivotalTracker
   class Story
@@ -11,7 +11,7 @@ module PivotalTracker
       @project_id       = options["project_id"]
       @story_type       = options["story_type"]
       @name             = options["name"]
-      @description      = html_to_markdown(options["description"])
+      @description      = Sanitize.clean(options["description"])
       @requested_by     = options["requested_by"]
       @current_state    = options["current_state"]
       @estimate         = options["estimate"]
@@ -85,13 +85,6 @@ module PivotalTracker
       story_type = node.xpath("type").text.scan(/^(feature|bug)/i)[0]
       story_type ||= ["feature"]
       story_type.first.downcase
-    end
-    
-    private
-    
-    def html_to_markdown(html)
-      return "" if html.nil?
-      ReverseMarkdown.new.parse_string(html)
     end
 
   end

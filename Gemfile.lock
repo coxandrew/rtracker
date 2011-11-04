@@ -32,6 +32,8 @@ GEM
       rspec-expectations (~> 2.0.1)
     ruby_parser (2.0.6)
       sexp_processor (~> 3.0)
+    sanitize (2.0.3)
+      nokogiri (>= 1.4.4, < 1.6)
     sexp_processor (3.0.7)
     slop (2.1.0)
     spoon (0.0.1)
@@ -50,4 +52,5 @@ DEPENDENCIES
   nokogiri (~> 1.4.4)
   pry
   rspec (~> 2.0.1)
+  sanitize
   wirble

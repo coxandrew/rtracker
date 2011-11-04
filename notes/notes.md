@@ -16,6 +16,7 @@ X * Try using External Link for JIRA in Pivotal story
 * Try using mash from hashie for creating a proper Project object
 * Get integration id from the Project
 * Handle unknown users gracefully
+* Add logging on success or failure
 * Make a proper Project object that you can use with `Project.find()`
 * Try vcr for integration tests
 * Delete all stories in setup for tests
