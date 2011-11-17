@@ -1,4 +1,7 @@
 require 'httpclient'
+require 'uri'
+require 'sanitize'
+require 'htmlentities'
 require 'pp'
 
 module PivotalTracker
@@ -20,20 +23,10 @@ module PivotalTracker
           :story_type   => Story.story_type(node),
           :name         => node.xpath("summary").text,
           :description  => node.xpath("description").text,
-          :requested_by => "Andrew Cox" # node.xpath("reporter").text
+          :requested_by => node.xpath("reporter").text
         )
       
-        issue.notes = []
-      
-        environment = node.xpath("environment")
-        if !environment.text.empty?
-          issue.notes << "Environment: #{environment.text}"
-        end
-      
-        node.xpath("comments/comment[text()]").each do |comment|
-          issue.notes << comment.text
-        end
-      
+        issue.notes = get_notes(node)
         issues << issue
       end
       
@@ -42,10 +35,17 @@ module PivotalTracker
     
     def xml_export
       jql_criteria = [
+        # "project = FF",
+        # "(summary ~ \"dwfs not translating\" OR description ~ \"dwfs not translating\")",
+        # "status in (Open, \"In Progress\", Reopened)"        
         "project = FF",
-        "status in (Open, \"In Progress\", Reopened)"
+        "summary = \"DWFs not translating\"",
+        "issuetype = Bug",
+        "status = Open"
+        # project = FF AND summary ~ "\"dwfs not translating\"" AND issuetype = Bug AND status = Open
       ]
-      jql_query = jql_criteria.join(" AND ")
+      # jql_query = jql_criteria.join(" AND ")
+      jql_query = 'project = FF AND summary ~ "\"dwfs not translating\"" AND issuetype = Bug AND status = Open'
       query = {
         :jqlQuery => jql_query,
         :tempMax => "5",
@@ -58,6 +58,34 @@ module PivotalTracker
       response = HTTPClient.get(path, :query => query)
       
       return response.content
+    end
+    
+    private
+    
+    def get_notes(node)
+      notes = []
+    
+      environment = node.xpath("environment")
+      notes << "Environment: #{environment.text}" if !environment.text.empty?
+    
+      node.xpath("comments/comment[text()]").each do |comment|
+        coder = HTMLEntities.new
+        notes << coder.decode(Sanitize.clean(comment.text))
+      end
+      
+      notes << get_attachments(node)
+      
+      return notes.flatten
+    end
+    
+    def get_attachments(node)
+      attachment_base_uri = "http://jira.autodesk.com/secure/attachment"
+      attachments = []
+      node.xpath("attachments/attachment").each do |image|
+        path = "#{image.attribute("id")}/#{image.attribute("name")}"
+        attachments << URI.escape("#{attachment_base_uri}/#{path}")
+      end
+      return attachments
     end
   end
 end

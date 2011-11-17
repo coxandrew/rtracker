@@ -44,14 +44,17 @@ module PivotalTracker
           "name"            => issue.name,
           "requested_by"    => issue.requested_by,
           "description"     => issue.description,
-          "note"            => issue.note,
-          "jira_id"         => issue.jira_id
+          "jira_id"         => issue.jira_id,
+          "notes"           => issue.notes
         )
         story_exists = stories.find { |s| s.jira_id == story.jira_id }
         if story_exists
           puts "- Already imported JIRA issue: '[#{story.jira_id}] #{story.name}'"
         else
           story.add
+          story.notes.each do |note|
+            story.add_note(note)
+          end
         end
       end
     end

@@ -5,6 +5,8 @@ gem "httparty"
 gem "httpclient"
 gem "hashie"
 gem "sanitize"
+gem "htmlentities"
+gem "logging"
 
 group :test do
   gem "rspec", "~> 2.0.1"

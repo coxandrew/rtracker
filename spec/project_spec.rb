@@ -34,4 +34,15 @@ describe Project do
       project.stories_csv
     end
   end
+  
+  context "#members" do
+    project = Project.new("id" => "369409")
+    project.members
+  end
+  
+  context "#owners" do
+    project = Project.new("id" => "369409")
+    pp project.owners
+  end
+  
 end

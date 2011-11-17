@@ -7,11 +7,15 @@ GEM
     diff-lcs (1.1.2)
     hashie (1.2.0)
     hirb (0.3.6)
+    htmlentities (4.3.0)
     httparty (0.6.1)
       crack (= 0.1.8)
     httpclient (2.2.3)
     interactive_editor (0.0.6)
       spoon (>= 0.0.1)
+    little-plugger (1.1.2)
+    logging (1.6.1)
+      little-plugger (>= 1.1.2)
     method_source (0.6.6)
       ruby_parser (~> 2.0.5)
     nokogiri (1.4.4)
@@ -46,9 +50,11 @@ DEPENDENCIES
   awesome_print
   hashie
   hirb
+  htmlentities
   httparty
   httpclient
   interactive_editor
+  logging
   nokogiri (~> 1.4.4)
   pry
   rspec (~> 2.0.1)

@@ -1,5 +1,6 @@
 require "nokogiri"
 require "csv"
+require 'pp'
 
 module PivotalTracker
   class Project
@@ -20,7 +21,17 @@ module PivotalTracker
       projects = Connection.new.request("/projects").parsed_response["projects"]
       projects.collect { |attributes| Project.new(attributes) }
     end
-
+    
+    def members
+      @connection.request("/projects/#{@id}/memberships")["memberships"]
+    end
+    
+    def owners
+      members.select do |member|
+        member["role"] == "Owner"
+      end
+    end
+    
     def stories
       response = @connection.request("/projects/#{@id}/stories")
       response.parsed_response["stories"].collect { |s| Story.new(s) }

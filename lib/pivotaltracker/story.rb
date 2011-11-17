@@ -4,7 +4,7 @@ require 'sanitize'
 
 module PivotalTracker
   class Story
-    attr_reader :id, :name, :jira_id, :story_type
+    attr_reader :id, :name, :jira_id, :story_type, :notes
 
     def initialize(options = {})
       @id               = options["id"]
@@ -12,10 +12,11 @@ module PivotalTracker
       @story_type       = options["story_type"]
       @name             = options["name"]
       @description      = Sanitize.clean(options["description"])
-      @requested_by     = options["requested_by"]
+      @requested_by     = "Andrew Cox" # options["requested_by"]
       @current_state    = options["current_state"]
       @estimate         = options["estimate"]
       @jira_id          = options["jira_id"] || options["other_id"]
+      @notes            = options["notes"]
     end
 
     def to_xml
