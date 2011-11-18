@@ -9,8 +9,8 @@ module PivotalTracker
     base_uri "www.pivotaltracker.com/services/v3"
     format :xml
 
-    def initialize(config_file = "config.yml")
-      @config = Config.new(config_file)
+    def initialize(options = {})
+      @config = Config.new(options)
     end
 
     def request(path, query = {})

@@ -14,10 +14,10 @@ X * Add attachments as comments
 X * Add environment as comment
 X * Add comments
 X * Fix HTML entities and markup tags
+X * Add logging on success or failure
 
 ## MVP
 
-* Add logging on success or failure
 * Use correct JIRA query parameters
 * Schedule cron job to poll from FF and FFM
 
@@ -25,6 +25,8 @@ X * Fix HTML entities and markup tags
 
 * Get the right names for the comments
 * Only log to stdout if verbose is set
+* Optimize for number of API calls
+* Add "mobile" or "web" labels depending on JIRA project?
 * Handle unknown users gracefully
 * Get integration id from the Project
 * Try using mash from hashie for creating a proper Project object
@@ -33,6 +35,7 @@ X * Fix HTML entities and markup tags
 * Delete all stories in setup for tests
 * Is there a cleaner way to get notes without having to flatten?
 * Make https work
+* Error handling for import without a jira_id
 
 ## NOTES
 

@@ -42,7 +42,6 @@ describe Project do
   
   context "#owners" do
     project = Project.new("id" => "369409")
-    pp project.owners
   end
   
 end

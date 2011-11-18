@@ -2,17 +2,22 @@ require 'httpclient'
 require 'uri'
 require 'sanitize'
 require 'htmlentities'
+require 'date'
 require 'pp'
 
 module PivotalTracker
   class Jira
     attr_accessor :username, :password, :base_uri
     
-    def initialize(config_file = "config.yml")
-      config = Config.new(config_file)
+    def initialize(options = {})
+      options[:config_file] ||= "config.yml"
+      config = Config.new(options)
+      
       @username = config.jira.username
       @password = config.jira.password
       @base_uri = config.jira.base_uri
+      
+      @jira_id = options["jira_id"]
     end
     
     def issues(options = {})
@@ -35,20 +40,15 @@ module PivotalTracker
     
     def xml_export
       jql_criteria = [
-        # "project = FF",
-        # "(summary ~ \"dwfs not translating\" OR description ~ \"dwfs not translating\")",
-        # "status in (Open, \"In Progress\", Reopened)"        
-        "project = FF",
-        "summary = \"DWFs not translating\"",
+        "project = #{@jira_id}",
         "issuetype = Bug",
-        "status = Open"
-        # project = FF AND summary ~ "\"dwfs not translating\"" AND issuetype = Bug AND status = Open
+        "status = Open",
+        "created >= #{Date.today - 14}"
       ]
-      # jql_query = jql_criteria.join(" AND ")
-      jql_query = 'project = FF AND summary ~ "\"dwfs not translating\"" AND issuetype = Bug AND status = Open'
+      jql_query = jql_criteria.join(" AND ")
+
       query = {
         :jqlQuery => jql_query,
-        :tempMax => "5",
         :os_username => @username,
         :os_password => @password
       }

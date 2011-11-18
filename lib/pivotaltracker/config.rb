@@ -2,8 +2,9 @@ module PivotalTracker
   class Config
     attr_accessor :jira, :pivotal
     
-    def initialize(config_file)
-      load_config(config_file)
+    def initialize(options)
+      options[:config_file] ||= "config.yml"
+      load_config(options[:config_file])
     end
 
     private

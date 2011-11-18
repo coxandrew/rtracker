@@ -2,15 +2,13 @@ require 'logging'
 
 module PivotalTracker
   def self.logger
-    logger = Logging.logger['cron']
-    logger.add_appenders(
-      Logging.appenders.stdout,
-      Logging.appenders.rolling_file(
-        'rtracker.log',
-        :layout => Logging.layouts.pattern(:pattern => '[%d] %-5l %c: %m\n')
-      )
+    Logging.logger.root.appenders = Logging.appenders.file(
+      'rtracker.log',
+      :layout => Logging.layouts.pattern(:pattern => '[%d] %-5l %c: %m\n')
     )
-    
+    Logging.logger.root.add_appenders(Logging.appenders.stdout)
+        
+    logger = Logging.logger['cron']
     logger.level = :info
     
     return logger

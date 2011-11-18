@@ -40,7 +40,7 @@ module PivotalTracker
       
       stories = Project.new("id" => project_id).stories
       stories_imported = 0
-      Jira.new.issues.each do |issue|
+      Jira.new(options).issues.each do |issue|
         story = Story.new(
           "project_id"      => project_id,
           "story_type"      => issue.story_type,
@@ -52,7 +52,7 @@ module PivotalTracker
         )
         story_exists = stories.find { |s| s.jira_id == story.jira_id }
         if story_exists
-          @logger.debug "- Already imported JIRA issue: '[#{story.jira_id}] #{story.name}'"
+            @logger.debug "- Already imported JIRA issue: '[#{story.jira_id}] #{story.name}'"
         else
           story.add
           stories_imported += 1

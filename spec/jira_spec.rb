@@ -5,7 +5,7 @@ include PivotalTracker
 
 describe Jira do
   it "gets the JIRA config credentials" do
-    jira = Jira.new("config.yml.example")
+    jira = Jira.new(:config_file => "config.yml.example")
     jira.username.should == "your_username"
     jira.password.should == "Password1"
     jira.base_uri.should == "jira.yourcompany.com"
