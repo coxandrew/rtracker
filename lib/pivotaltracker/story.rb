@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'pp'
 require 'sanitize'
+require 'logging'
 
 module PivotalTracker
   class Story
@@ -46,7 +47,7 @@ module PivotalTracker
         :body => self.to_xml
       )
       set_id(response)
-      puts "+ Added #{@story_type}: '#{@name}'"
+      PivotalTracker.logger.info "+ Added #{@story_type}: '#{@name}'"
     end
 
     # TODO: Don't reach through Connection to get the pivotal token

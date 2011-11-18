@@ -18,11 +18,13 @@ X * Fix HTML entities and markup tags
 ## MVP
 
 * Add logging on success or failure
+* Use correct JIRA query parameters
 * Schedule cron job to poll from FF and FFM
 
 ## Later
 
 * Get the right names for the comments
+* Only log to stdout if verbose is set
 * Handle unknown users gracefully
 * Get integration id from the Project
 * Try using mash from hashie for creating a proper Project object

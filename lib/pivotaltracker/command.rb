@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'pp'
+require 'pivotaltracker/logging'
 
 module PivotalTracker
   class OptionParser::InvalidCommand < Exception; end
@@ -8,6 +9,7 @@ module PivotalTracker
     def initialize
       @account = Account.new
       @printer = Printer.new(STDOUT)
+      @logger = PivotalTracker.logger
     end
 
     def status(options = {})
@@ -37,6 +39,7 @@ module PivotalTracker
       end
       
       stories = Project.new("id" => project_id).stories
+      stories_imported = 0
       Jira.new.issues.each do |issue|
         story = Story.new(
           "project_id"      => project_id,
@@ -49,14 +52,17 @@ module PivotalTracker
         )
         story_exists = stories.find { |s| s.jira_id == story.jira_id }
         if story_exists
-          puts "- Already imported JIRA issue: '[#{story.jira_id}] #{story.name}'"
+          @logger.debug "- Already imported JIRA issue: '[#{story.jira_id}] #{story.name}'"
         else
           story.add
+          stories_imported += 1
           story.notes.each do |note|
             story.add_note(note)
           end
         end
       end
+      
+      @logger.info "JIRA: #{stories_imported} #{(stories_imported == 1) ? 'story' : 'stories'} imported"
     end
 
     def method_missing(sym, *args, &block)
