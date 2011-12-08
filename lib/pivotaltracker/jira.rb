@@ -43,7 +43,7 @@ module PivotalTracker
         "project = #{@jira_id}",
         "issuetype = Bug",
         "status = Open",
-        "created >= #{Date.today - 14}"
+        "created >= #{Date.today - 30}"
       ]
       jql_query = jql_criteria.join(" AND ")
 

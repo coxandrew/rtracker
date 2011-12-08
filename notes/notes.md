@@ -1,28 +1,18 @@
 ## TODO
 
-X * Fix error for status
-X * Restrict to project
-X * Get project id from command line
-X * Don't import duplicate JIRA stories
-X * Parse config.yml to get JIRA and Pivotal credentials
-X * Rename pivotaltracker executable to rtracker
-X * Parse XML from file to get list of stories
-X * Get XML from JIRA
-X * Use username and password for JIRA from Yaml file 
-X * Try using External Link for JIRA in Pivotal story
-X * Add attachments as comments
-X * Add environment as comment
-X * Add comments
-X * Fix HTML entities and markup tags
-X * Add logging on success or failure
+X * Use correct JIRA query parameters
+X * Schedule cron job to poll from FF and FFM
 
-## MVP
+## Debugging
 
-* Use correct JIRA query parameters
-* Schedule cron job to poll from FF and FFM
+* Add integration id as config param
+* Add logging level as a param
+* For "info" level debugging, output the bugs that were returned from the JIRA query
+* Update installation with fixed copy (no local changes)
 
 ## Later
 
+* Use Jenkins for deploying to ~/bin/rtracker
 * Get the right names for the comments
 * Only log to stdout if verbose is set
 * Optimize for number of API calls
