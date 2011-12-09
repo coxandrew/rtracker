@@ -2,7 +2,7 @@ module PivotalTracker
   class Config
     attr_accessor :jira, :pivotal
     
-    def initialize(options)
+    def initialize(options = {})
       options[:config_file] ||= "config.yml"
       load_config(options[:config_file])
     end
@@ -18,7 +18,8 @@ module PivotalTracker
         :password => config["jira"]["password"]
       )
       @pivotal = OpenStruct.new(
-        :token => config["pivotal"]["api_token"]
+        :token => config["pivotal"]["api_token"],
+        :integration_id => config["pivotal"]["integration_id"]
       )
     end
   end

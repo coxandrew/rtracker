@@ -9,7 +9,7 @@ module PivotalTracker
     Logging.logger.root.add_appenders(Logging.appenders.stdout)
         
     logger = Logging.logger['cron']
-    logger.level = :info
+    logger.level = :debug
     
     return logger
   end

@@ -6,7 +6,7 @@ include PivotalTracker
 describe Project do
   context "#project" do
     it "finds a single project by id" do
-      project = Project.find(369409)
+      Project.find(398325)
     end
   end
   

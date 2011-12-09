@@ -8,6 +8,8 @@ module PivotalTracker
     attr_reader :id, :name, :jira_id, :story_type, :notes
 
     def initialize(options = {})
+      @config           = Config.new
+      
       @id               = options["id"]
       @project_id       = options["project_id"]
       @story_type       = options["story_type"]
@@ -18,6 +20,18 @@ module PivotalTracker
       @estimate         = options["estimate"]
       @jira_id          = options["jira_id"] || options["other_id"]
       @notes            = options["notes"]
+    end
+    
+    def self.from_jira(project_id, issue)
+      Story.new(
+        "project_id"      => project_id,
+        "story_type"      => issue.story_type.downcase,
+        "name"            => issue.name,
+        "requested_by"    => issue.requested_by,
+        "description"     => issue.description,
+        "jira_id"         => issue.jira_id,
+        "notes"           => issue.notes
+      )
     end
 
     def to_xml
@@ -30,7 +44,7 @@ module PivotalTracker
           
           # JIRA integration
           xml.other_id        @jira_id
-          xml.integration_id  "9423"
+          xml.integration_id  @config.pivotal.integration_id
         }
       }.to_xml
     end

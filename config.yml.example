@@ -1,6 +1,7 @@
 pivotal:
   api_token: a87lksdf9a87dsf98asdfjasd89f7sdf
+  integration_id: 1234
 jira:
-  base_uri: jira.yourcompany.com
+  base_uri: jira.yourcompany.com/rest/api/2.0.alpha1
   username: your_username
   password: Password1

@@ -1,5 +1,3 @@
-require 'httpclient'
-require 'uri'
 require 'sanitize'
 require 'htmlentities'
 require 'date'
@@ -7,85 +5,93 @@ require 'pp'
 
 module PivotalTracker
   class Jira
-    attr_accessor :username, :password, :base_uri
+    include HTTParty
+    
+    config = YAML::load(File.open("config.yml"))
+
+    base_uri config["jira"]["base_uri"]
+    default_params  :os_username => config["jira"]["username"], 
+                    :os_password => config["jira"]["password"]
     
     def initialize(options = {})
-      options[:config_file] ||= "config.yml"
-      config = Config.new(options)
-      
-      @username = config.jira.username
-      @password = config.jira.password
-      @base_uri = config.jira.base_uri
-      
       @jira_id = options["jira_id"]
+      @logger = PivotalTracker.logger
     end
     
-    def issues(options = {})
-      issues = []
-      Nokogiri::XML(xml_export).xpath("//item").each do |node|
-        issue = OpenStruct.new(
-          :jira_id      => node.xpath("key").text,
-          :story_type   => Story.story_type(node),
-          :name         => node.xpath("summary").text,
-          :description  => node.xpath("description").text,
-          :requested_by => node.xpath("reporter").text
-        )
+    def bugs(options = {})
+      query = { :jql => bug_search_criteria }
       
-        issue.notes = get_notes(node)
-        issues << issue
+      self.class.get("/search", :query => query)["issues"].collect do |issue|
+        OpenStruct.new(:jira_id => issue["key"])
       end
-      
-      return issues
     end
     
-    def xml_export
-      jql_criteria = [
+    def self.find(id)
+      config = Config.new
+      response = get("/issue/#{id}")
+      fields = response["fields"]
+      
+      issue = OpenStruct.new(
+        :jira_id      => id,
+        :story_type   => fields["issuetype"]["value"]["name"],
+        :name         => fields["summary"]["value"],
+        :description  => fields["description"]["value"],
+        :requested_by => fields["reporter"]["value"]["displayName"]
+      )
+      issue.notes = get_notes(fields)
+      
+      return issue
+    end
+    
+    private
+        
+    def bug_search_criteria
+      jql = [
         "project = #{@jira_id}",
         "issuetype = Bug",
         "status = Open",
         "created >= #{Date.today - 30}"
-      ]
-      jql_query = jql_criteria.join(" AND ")
-
-      query = {
-        :jqlQuery => jql_query,
-        :os_username => @username,
-        :os_password => @password
-      }
-      
-      path = "http://" + @base_uri +
-        "/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml"
-      response = HTTPClient.get(path, :query => query)
-      
-      return response.content
+      ].join(" AND ")
     end
     
-    private
-    
-    def get_notes(node)
-      notes = []
-    
-      environment = node.xpath("environment")
-      notes << "Environment: #{environment.text}" if !environment.text.empty?
-    
-      node.xpath("comments/comment[text()]").each do |comment|
-        coder = HTMLEntities.new
-        notes << coder.decode(Sanitize.clean(comment.text))
-      end
+    def self.default_params
+      config = Config.new(:config_file => "config.yml")
       
-      notes << get_attachments(node)
+      return {
+        :os_username => config.jira.username,
+        :os_password => config.jira.password
+      }
+    end
+    
+    def self.get_notes(fields)
+      notes = []
+      
+      notes << get_environment(fields)
+      notes << get_attachments(fields)
+      notes << get_comments(fields)
       
       return notes.flatten
     end
     
-    def get_attachments(node)
-      attachment_base_uri = "http://jira.autodesk.com/secure/attachment"
-      attachments = []
-      node.xpath("attachments/attachment").each do |image|
-        path = "#{image.attribute("id")}/#{image.attribute("name")}"
-        attachments << URI.escape("#{attachment_base_uri}/#{path}")
-      end
-      return attachments
+    def self.get_environment(fields)
+      environment = fields["environment"]["value"]
+      environment_comment = "Environment: #{environment}" if !environment.nil?
+      
+      return environment_comment || []
     end
+    
+    def self.get_comments(fields)
+      fields["comment"]["value"].collect do |comment|
+        coder = HTMLEntities.new
+        coder.decode(Sanitize.clean(comment["body"]))
+      end
+    end
+    
+    def self.get_attachments(fields)
+      fields["attachment"]["value"].collect do |image|
+        image["content"]
+      end
+    end
+    
   end
 end
