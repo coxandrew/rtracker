@@ -6,42 +6,50 @@ include PivotalTracker
 describe Project do
   context "#project" do
     it "finds a single project by id" do
-      Project.find(398325)
+      VCR.use_cassette('pt_398325') do
+        Project.find(398325)
+      end
     end
   end
   
   context "#stories" do
     it "gets all stories" do
-      project = Project.new("id" => "369409")
-      project.stories
+      VCR.use_cassette('pt_stories') do
+        project = Project.new("id" => "369409")
+        project.stories
+      end
     end
   end
 
   context "#accepted_stories" do
     it "gets all accepted stories" do
-      project = Project.new("id" => "369409")
-      project.accepted_stories
+      VCR.use_cassette('pt_accepted_stories') do
+        project = Project.new("id" => "369409")
+        project.accepted_stories
+      end
     end
   end
 
   context "#stories_csv" do
-    # Projects
-    # 330951 - Firefly Mobile
-    # 331671 - Firefly Web
-
     it "outputs stories in CSV format" do
-      project = Project.new("id" => "331671")
-      project.stories_csv
+      VCR.use_cassette('pt_csv') do
+        project = Project.new("id" => "331671")
+        project.stories_csv
+      end
     end
   end
   
   context "#members" do
-    project = Project.new("id" => "369409")
-    project.members
+    VCR.use_cassette('pt_members') do
+      project = Project.new("id" => "369409")
+      project.members
+    end
   end
   
   context "#owners" do
-    project = Project.new("id" => "369409")
+    VCR.use_cassette('pt_owners') do
+      project = Project.new("id" => "369409")
+    end
   end
   
 end

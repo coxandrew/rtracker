@@ -3,3 +3,4 @@ config.yml
 *.log
 fixtures/*
 notes
+vcr_cassettes

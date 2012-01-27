@@ -10,6 +10,8 @@ gem "logging"
 
 group :test do
   gem "rspec", "~> 2.0.1"
+  gem "webmock"
+  gem "vcr"
 end
 
 group :development do
