@@ -4,34 +4,30 @@ require 'pp'
 
 module PivotalTracker
   class Project
-    attr_reader :id, :name, :velocity
+    attr_reader :id, :name, :velocity, :integration_id
 
-    def initialize(attributes)
+    def initialize(project_id)
       @connection = Connection.new
-      @id         = attributes["id"]
-      @name       = attributes["name"]
-      @velocity   = attributes["current_velocity"]
-    end
-    
-    def self.find(id)
-      Connection.new.request("/projects/#{id}")
+      @id         = project_id
+
+      set_project_details
     end
 
     def self.all
       projects = Connection.new.request("/projects").parsed_response["projects"]
       projects.collect { |attributes| Project.new(attributes) }
     end
-    
+
     def members
       @connection.request("/projects/#{@id}/memberships")["memberships"]
     end
-    
+
     def owners
       members.select do |member|
         member["role"] == "Owner"
       end
     end
-    
+
     def stories
       response = @connection.request("/projects/#{@id}/stories")
       response.parsed_response["stories"].collect { |s| Story.new(s) }
@@ -70,5 +66,17 @@ module PivotalTracker
         end
       end
     end
+
+    private
+
+    def set_project_details
+      response = @connection.request("/projects/#{@id}")
+      project = response.parsed_response["project"]
+
+      @name           = project["name"]
+      @velocity       = project["current_velocity"]
+      @integration_id = project["integrations"][0]["id"]
+    end
+
   end
 end

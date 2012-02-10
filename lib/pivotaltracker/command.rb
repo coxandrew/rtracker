@@ -37,8 +37,8 @@ module PivotalTracker
         $stderr.puts "\nError: import requires a --project argument"
         raise OptionParser::InvalidOption
       end
-      
-      stories = Project.new("id" => project_id).stories
+
+      stories = Project.new(project_id).stories
       stories_imported = 0
       Jira.new(options).bugs.each do |issue|
         story_exists = stories.find { |s| s.jira_id == issue.jira_id }
@@ -52,7 +52,7 @@ module PivotalTracker
           story.notes.each { |note| story.add_note(note) }
         end
       end
-      
+
       @logger.info "JIRA: #{stories_imported} #{(stories_imported == 1) ? 'story' : 'stories'} imported"
     end
 
