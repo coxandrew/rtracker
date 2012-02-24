@@ -11,7 +11,7 @@ describe Jira do
     it "gets the bugs from the last 30 days" do
       VCR.use_cassette('ffm_bugs') do
         jira = Jira.new("jira_id" => "FFM")
-        jira.bugs.size.should == 35
+        jira.bugs.size.should == 17
       end
     end
   end

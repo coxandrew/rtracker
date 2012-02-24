@@ -9,7 +9,7 @@ module PivotalTracker
 
     def initialize(options = {})
       @config           = Config.new
-      
+
       @id               = options["id"]
       @project_id       = options["project_id"]
       @story_type       = options["story_type"]
@@ -21,7 +21,7 @@ module PivotalTracker
       @jira_id          = options["jira_id"] || options["other_id"]
       @notes            = options["notes"]
     end
-    
+
     def self.from_jira(project_id, issue)
       Story.new(
         "project_id"      => project_id,
@@ -34,6 +34,14 @@ module PivotalTracker
       )
     end
 
+    def self.find(options = {})
+      connection = Connection.new
+      project = options[:project_id]
+      story = options[:story_id]
+
+      connection.request "/projects/#{project}/stories/#{story}"
+    end
+
     def to_xml
       Nokogiri::XML::Builder.new { |xml|
         xml.story {
@@ -41,9 +49,10 @@ module PivotalTracker
           xml.name            @name
           xml.description     @description
           xml.requested_by    @requested_by
-          
+
           # JIRA integration
           xml.other_id        @jira_id
+          xml.other_url       "http://jira.autodesk.com/browse/#{@jira_id}"
           xml.integration_id  @config.pivotal.integration_id
         }
       }.to_xml
@@ -52,6 +61,7 @@ module PivotalTracker
     # TODO: Don't reach through Connection to get the pivotal token
     def add
       conn = Connection.new
+
       response = conn.class.post(
         "/projects/#{@project_id}/stories",
         :headers => {

@@ -1,11 +1,4 @@
-require 'spec_helper'
-require 'pp'
-require "vcr"
-
-VCR.config do |c|
-  c.cassette_library_dir = 'fixtures/vcr_cassettes'
-  c.stub_with :webmock
-end
+require "spec_helper"
 
 include PivotalTracker
 
